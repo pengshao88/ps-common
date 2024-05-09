@@ -19,11 +19,11 @@ import java.util.function.Function;
  */
 public class FieldUtils {
 
-    static List<Field> findAnnotatedField(Class<?> aClass, Class<? extends Annotation> annotationClass) {
+    public static List<Field> findAnnotatedField(Class<?> aClass, Class<? extends Annotation> annotationClass) {
         return findField(aClass, (f) -> f.isAnnotationPresent(annotationClass));
     }
 
-    static List<Field> findField(Class<?> aClass, Function<Field, Boolean> function) {
+    public static List<Field> findField(Class<?> aClass, Function<Field, Boolean> function) {
         ArrayList<Field> result;
         for (result = new ArrayList<>(); aClass != null; aClass = aClass.getSuperclass()) {
             Field[] fields = aClass.getDeclaredFields();
@@ -36,7 +36,7 @@ public class FieldUtils {
         return result;
     }
 
-    static void setFinalField(Object obj, String fieldName, Object value) throws NoSuchFieldException {
+    public static void setFinalField(Object obj, String fieldName, Object value) throws NoSuchFieldException {
         try {
             setFinalField(obj, obj.getClass().getField(fieldName), value);
         } catch (Throwable ex) {
@@ -44,13 +44,13 @@ public class FieldUtils {
         }
     }
 
-    static void setFinalField(Object obj, Field field, Object value) {
+    public static void setFinalField(Object obj, Field field, Object value) {
         Unsafe unsafe = UnsafeUtils.getUnsafe();
         long fieldOffset = unsafe.objectFieldOffset(field);
         unsafe.putObject(obj, fieldOffset, value);
     }
 
-    static Object getField(Object obj, String fieldName) throws NoSuchFieldException {
+    public static Object getField(Object obj, String fieldName) throws NoSuchFieldException {
         try {
             return getField(obj, obj.getClass().getField(fieldName));
         } catch (Throwable ex) {
@@ -58,7 +58,7 @@ public class FieldUtils {
         }
     }
 
-    static Object getField(Object obj, Field field) {
+    public static Object getField(Object obj, Field field) {
         Unsafe unsafe = UnsafeUtils.getUnsafe();
         long fieldOffset = unsafe.objectFieldOffset(field);
         return unsafe.getObject(obj, fieldOffset);
