@@ -1,5 +1,8 @@
 package cn.pengshao.common.http;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 
@@ -16,10 +19,15 @@ public class OkHttpInvoker implements HttpInvoker {
 
     final OkHttpClient okHttpClient;
 
+    /**
+     * OkHttpInvoker
+     *
+     * @param timeout 超时时间 TimeUnit.SECONDS
+     */
     public OkHttpInvoker(int timeout) {
         okHttpClient = new OkHttpClient.Builder()
                 .connectionPool(new ConnectionPool(16, 60, TimeUnit.SECONDS))
-                .readTimeout(timeout, TimeUnit.MILLISECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS)
                 .writeTimeout(timeout, TimeUnit.SECONDS)
                 .connectTimeout(timeout, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
@@ -58,5 +66,29 @@ public class OkHttpInvoker implements HttpInvoker {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @SneakyThrows
+    public <T> T httpGet(String url, Class<T> clazz) {
+        LOGGER.debug(" =====>>>>>> httpGet: " + url);
+        String respJson = get(url);
+        LOGGER.debug(" =====>>>>>> response: " + respJson);
+        return JSON.parseObject(respJson, clazz);
+    }
+
+    @SneakyThrows
+    public <T> T httpGet(String url, TypeReference<T> typeReference) {
+        LOGGER.debug(" =====>>>>>> httpGet: " + url);
+        String respJson = get(url);
+        LOGGER.debug(" =====>>>>>> response: " + respJson);
+        return JSON.parseObject(respJson, typeReference);
+    }
+
+    @SneakyThrows
+    public <T> T httpPost(String requestString,String url, Class<T> clazz) {
+        LOGGER.debug(" =====>>>>>> httpGet: " + url);
+        String respJson = post(requestString, url);
+        LOGGER.debug(" =====>>>>>> response: " + respJson);
+        return JSON.parseObject(respJson, clazz);
     }
 }

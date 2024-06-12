@@ -16,8 +16,7 @@ public interface HttpInvoker {
 
     Logger LOGGER = LoggerFactory.getLogger(HttpInvoker.class);
 
-    // TODO 配置开放 静态方法下放
-    HttpInvoker Default = new OkHttpInvoker(1000);
+    HttpInvoker Default = new OkHttpInvoker(3);
 
 
     String post(String requestString, String url);
