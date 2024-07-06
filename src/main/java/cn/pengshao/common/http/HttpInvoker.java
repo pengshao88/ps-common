@@ -45,4 +45,12 @@ public interface HttpInvoker {
         LOGGER.debug(" =====>>>>>> response: " + respJson);
         return JSON.parseObject(respJson, clazz);
     }
+
+    @SneakyThrows
+    static <T> T httpPost(String requestString,String url, TypeReference<T> typeReference) {
+        LOGGER.debug(" =====>>>>>> httpPost: " + url);
+        String respJson = Default.post(requestString, url);
+        LOGGER.debug(" =====>>>>>> response: " + respJson);
+        return JSON.parseObject(respJson, typeReference);
+    }
 }

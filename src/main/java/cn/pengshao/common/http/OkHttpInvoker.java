@@ -91,4 +91,12 @@ public class OkHttpInvoker implements HttpInvoker {
         LOGGER.debug(" =====>>>>>> response: " + respJson);
         return JSON.parseObject(respJson, clazz);
     }
+
+    @SneakyThrows
+    public <T> T httpPost(String requestString,String url, TypeReference<T> typeReference) {
+        LOGGER.debug(" =====>>>>>> httpPost: " + url);
+        String respJson = post(requestString, url);
+        LOGGER.debug(" =====>>>>>> response: " + respJson);
+        return JSON.parseObject(respJson, typeReference);
+    }
 }
