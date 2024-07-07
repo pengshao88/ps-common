@@ -93,7 +93,7 @@ public class OkHttpInvoker implements HttpInvoker {
     }
 
     @SneakyThrows
-    public <T> T httpPost(String requestString,String url, TypeReference<T> typeReference) {
+    public <T> T httpPost(String requestString, String url, TypeReference<T> typeReference) {
         LOGGER.debug(" =====>>>>>> httpPost: " + url);
         String respJson = post(requestString, url);
         LOGGER.debug(" =====>>>>>> response: " + respJson);
